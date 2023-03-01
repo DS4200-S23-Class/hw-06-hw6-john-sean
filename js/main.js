@@ -45,7 +45,7 @@ function build_vis1() {
         //set the color
         const color = d3.scaleOrdinal()
             .domain(["setosa", "versicolor", "virginica"])
-            .range(["red", "violet", "green"])
+            .range(["green", "blue", "orange"])
 
         // Add points
         let scatter1 = FRAME1.selectAll("points")
@@ -100,10 +100,10 @@ function build_vis2() {
             .call(d3.axisLeft(Y_SCALE2).ticks(10))
             .attr("font-size", "12px");
 
-        var colors = {
-            'virginica': 'Blue',
-            'versicolor': 'Red',
-            'setosa': 'Green'
+        const colors = {
+            'virginica': 'green',
+            'versicolor': 'blue',
+            'setosa': 'orange'
         };
         // Enter data and append points to graph
         let scatter2 = FRAME2.selectAll("points")
