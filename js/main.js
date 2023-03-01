@@ -191,12 +191,12 @@ function build_vis3() {
             .enter()
             .append("rect")
             .attr("class", "bar")
-            .attr("x", (d) => { return X_SCALE3(d.Species); })
+            .attr("x", (d) => { return X_SCALE3(d.species); })
             .attr("y", (d) => { return MARGINS.top + Y_SCALE3(d.count); })
             .attr('id', (d) => { return d.Species })
             .attr("width", X_SCALE3.bandwidth())
             .attr("height", (d) => { return (VIS_HEIGHT - Y_SCALE3(d.count)); })
-            .attr("fill", (d) => { return color[d.Species]; })
+            .attr("fill", (d) => { return color[d.species]; })
             .attr("opacity", 0.5);
 
 
