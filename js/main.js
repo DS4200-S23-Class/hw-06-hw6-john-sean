@@ -156,45 +156,44 @@ function build_vis3() {
     d3.csv("data/iris.csv").then((data) => {
 
         // Create the mapping that will be visualized in the bar chart
-        var fdata = [{ 'setosa': 50 }, { 'versicolor': 50 }, { 'virginica': 50 }]
-        var map1 = fdata.map(d => {
+        var f_data = [{ 'setosa': 50 }, { 'versicolor': 50 }, { 'virginica': 50 }]
+        var bar_map = f_data.map(d => {
             return {
                 species: Object.keys(d)[0],
                 count: d[Object.keys(d)[0]]
             }
         });
-
-        // set scales and x,y maxes for vis3
-        const MAX_X3 = d3.max(map1, (d) => { return parseInt(d.species); })
-
-        const MAX_Y3 = d3.max(map1, (d) => { return parseInt(d.count); })
-
-        const X_SCALE3 = d3.scaleBand()
-            .domain(Object.keys(color))
-            .range([MARGINS.left, VIS_WIDTH])
-            .padding(0.3);
-
-        const Y_SCALE3 = d3.scaleLinear()
-            .domain([0, (MAX_Y3 + 1)])
-            .range([VIS_HEIGHT, 0]);
         // set the color to match other vis
-        const color = {
+        var color = {
             'setosa': 'green',
             'versicolor': 'blue',
             'virginica': 'orange'
         };
+
+        // set scales and maxes for vis3
+        const MAX_Y3 = d3.max(bar_map, (d) => { return parseInt(d.count); })
+
+        const X_SCALE3 = d3.scaleBand()
+            .domain(Object.keys(color))
+            .range([MARGINS.left, VIS_WIDTH])
+            .padding(0.2);
+
+        const Y_SCALE3 = d3.scaleLinear()
+            .domain([0, MAX_Y3])
+            .range([VIS_HEIGHT, 0]);
+        
         // Add bars 
         let bar = FRAME3.selectAll("bar")
-            .data(map1)
+            .data(bar_map)
             .enter()
             .append("rect")
             .attr("class", "bar")
-            .attr("x", (d) => { return X_SCALE3(d.species); })
+            .attr("x", (d) => { return X_SCALE3(d.Species); })
             .attr("y", (d) => { return MARGINS.top + Y_SCALE3(d.count); })
-            .attr('id', (d) => { return d.species })
+            .attr('id', (d) => { return d.Species })
             .attr("width", X_SCALE3.bandwidth())
             .attr("height", (d) => { return (VIS_HEIGHT - Y_SCALE3(d.count)); })
-            .attr("fill", (d) => { return color[d.species]; })
+            .attr("fill", (d) => { return color[d.Species]; })
             .attr("opacity", 0.5);
 
 
@@ -209,4 +208,4 @@ function build_vis3() {
     });
 }
 
-build_vis3();
+build_vis3()
