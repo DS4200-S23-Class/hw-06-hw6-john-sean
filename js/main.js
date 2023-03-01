@@ -43,9 +43,11 @@ function build_vis1() {
             .call(d3.axisLeft(Y_SCALE1).ticks(10))
             .attr("font-size", "12px");
         //set the color
-        const color = d3.scaleOrdinal()
-            .domain(["setosa", "versicolor", "virginica"])
-            .range(["green", "blue", "orange"])
+        const color = {
+            'setosa': 'green',
+            'versicolor': 'blue',
+            'virginica': 'orange'
+        };
 
         // Add points
         let scatter1 = FRAME1.selectAll("points")
@@ -55,7 +57,7 @@ function build_vis1() {
             .attr("cx", (d) => { return (X_SCALE1(d.Sepal_Length) + MARGINS.left); })
             .attr("cy", (d) => { return (Y_SCALE1(d.Petal_Length) + MARGINS.top); })
             .attr("r", 5)
-            .attr("fill", function (d) { return color(d.Species); })
+            .attr("fill", function (d) { return color[d.Species]; })
             .attr("opacity", 0.5)
             .attr("stroke", "none")
             .attr("class", "point");
@@ -100,11 +102,11 @@ function build_vis2() {
             .call(d3.axisLeft(Y_SCALE2).ticks(10))
             .attr("font-size", "12px");
 
-        const colors = {
-            'setosa': 'green',
-            'versicolor': 'blue',
-            'virginica': 'orange'
-        };
+            const color = {
+                'setosa': 'green',
+                'versicolor': 'blue',
+                'virginica': 'orange'
+            };
         // Enter data and append points to graph
         let scatter2 = FRAME2.selectAll("points")
             .data(data)
@@ -114,7 +116,7 @@ function build_vis2() {
             .attr("cy", (d) => { return (Y_SCALE2(d.Petal_Width) + MARGINS.top); })
             .attr("r", 5)
             .attr("stroke", "none")
-            .attr("fill", function (d) { return colors[d.Species]; })
+            .attr("fill", function (d) { return color[d.Species]; })
             .attr("opacity", 0.5)
             .attr("class", "point");
     });
@@ -155,20 +157,21 @@ function build_vis3() {
 
     d3.csv("data/iris.csv").then((data) => {
 
+        // set the color to match other vis
+        const color = {
+            'setosa': 'green',
+            'versicolor': 'blue',
+            'virginica': 'orange'
+        };
+
         // Create the mapping that will be visualized in the bar chart
-        var f_data = [{ 'setosa': 50 }, { 'versicolor': 50 }, { 'virginica': 50 }]
+        var f_data = [{'setosa': 50}, {'versicolor': 50}, {'virginica': 50}]
         var bar_map = f_data.map(d => {
             return {
                 species: Object.keys(d)[0],
                 count: d[Object.keys(d)[0]]
             }
         });
-        // set the color to match other vis
-        var color = {
-            'setosa': 'green',
-            'versicolor': 'blue',
-            'virginica': 'orange'
-        };
 
         // set scales and maxes for vis3
         const MAX_Y3 = d3.max(bar_map, (d) => { return parseInt(d.count); })
@@ -179,7 +182,7 @@ function build_vis3() {
             .padding(0.2);
 
         const Y_SCALE3 = d3.scaleLinear()
-            .domain([0, MAX_Y3])
+            .domain([0, (MAX_Y3+1)])
             .range([VIS_HEIGHT, 0]);
         
         // Add bars 
