@@ -156,8 +156,8 @@ function build_vis3() {
     d3.csv("data/iris.csv").then((data) => {
 
         // Create the mapping that will be visualized in the bar chart
-        var data = [{ 'setosa': 50 }, { 'versicolor': 50 }, { 'virginica': 50 }]
-        var map1 = data.map(d => {
+        var fdata = [{ 'setosa': 50 }, { 'versicolor': 50 }, { 'virginica': 50 }]
+        var map1 = fdata.map(d => {
             return {
                 species: Object.keys(d)[0],
                 count: d[Object.keys(d)[0]]
@@ -185,7 +185,7 @@ function build_vis3() {
         };
         // Add bars 
         let bar = FRAME3.selectAll("bar")
-            .data(map_data)
+            .data(map1)
             .enter()
             .append("rect")
             .attr("class", "bar")
