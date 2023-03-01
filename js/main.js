@@ -16,7 +16,7 @@ const FRAME1 = d3.select("#vis1")
 
 // vis1 scatterplot
 function build_vis1() {
-    
+
     d3.csv("data/iris.csv").then((data) => {
 
         // set scales and x,y maxes
@@ -45,7 +45,7 @@ function build_vis1() {
         //set the color
         const color = d3.scaleOrdinal()
             .domain(["setosa", "versicolor", "virginica"])
-            .range(["green", "blue", "lightorange"])
+            .range(["red", "violet", "green"])
 
         // Add points
         let scatter1 = FRAME1.selectAll("points")
@@ -62,8 +62,7 @@ function build_vis1() {
     })
 }
 
-
-
+build_vis1()
 
 // vis2 frame
 const FRAME2 = d3.select("#vis2")
@@ -74,25 +73,25 @@ const FRAME2 = d3.select("#vis2")
 
 // vis 2 
 function build_vis2() {
-    
+
     d3.csv("data/iris.csv").then((data) => {
-        
-        // set scales and x,y maxes for the second catter plot
+
+        // set scales and x,y maxes for the second scatter plot
         const MAX_X2 = d3.max(data, (d) => { return parseInt(d.Sepal_Width); });
         const MAX_Y2 = d3.max(data, (d) => { return parseInt(d.Petal_Width); });
 
         const X_SCALE2 = d3.scaleLinear()
-            .domain([0, 8])
-            .range([0, VIS2_WIDTH]);
+            .domain([0, MAX_X2 + 0.6])
+            .range([0, VIS_WIDTH]);
 
         const Y_SCALE2 = d3.scaleLinear()
             .domain([0, (MAX_Y2 + 1)])
-            .range([VIS2_HEIGHT, 0]);
+            .range([VIS_HEIGHT, 0]);
 
         // Create x and y axis for the graph
         FRAME2.append("g")
             .attr("transform", "translate(" + MARGINS.left +
-                "," + (VIS2_HEIGHT + MARGINS.top) + ")")
+                "," + (VIS_HEIGHT + MARGINS.top) + ")")
             .call(d3.axisBottom(X_SCALE2).ticks(10))
             .attr("font-size", '12px');
         FRAME2.append("g")
@@ -101,10 +100,11 @@ function build_vis2() {
             .call(d3.axisLeft(Y_SCALE2).ticks(10))
             .attr("font-size", "12px");
 
-        const color = d3.scaleOrdinal()
-            .domain(["setosa", "versicolor", "virginica"])
-            .range(["green", "blue", "lightorange"])
-
+        var colors = {
+            'virginica': 'Blue',
+            'versicolor': 'Red',
+            'setosa': 'Green'
+        };
         // Enter data and append points to graph
         let scatter2 = FRAME2.selectAll("points")
             .data(data)
@@ -114,15 +114,10 @@ function build_vis2() {
             .attr("cy", (d) => { return (Y_SCALE2(d.Petal_Width) + MARGINS.top); })
             .attr("r", 5)
             .attr("stroke", "none")
-            .attr("fill", function (d) { return color(d.Species); })
+            .attr("fill", function (d) { return colors[d.Species]; })
             .attr("opacity", 0.5)
             .attr("class", "point");
-    })
-
-
-
-
-
+    });
 
     //Brushing using d3.brush funtion
     FRAME2.call(d3.brush()
@@ -139,11 +134,14 @@ function build_vis2() {
 
     //Boolean to determine if a point is currently selected
     function isBrushed(brush_xy, cx, cy) {
-        var x0 = brush_xy[0][0], x1 = brush_xy[1][0], y0 = brush_xy[0][1], y1 = brush_xy[1][1];
+        var x0 = brush_xy[0][0],
+            x1 = brush_xy[1][0],
+            y0 = brush_xy[0][1],
+            y1 = brush_xy[1][1];
         return x0 <= cx && cx <= x1 && y0 <= cy && cy <= y1;
     }
-
 }
+build_vis2()
 
 // vis 3 frame
 const FRAME3 = d3.select("#vis3")
@@ -159,7 +157,7 @@ function build_vis3() {
 
         // Create the mapping that will be visualized in the bar chart
         var data = [{ 'setosa': 50 }, { 'versicolor': 50 }, { 'virginica': 50 }]
-        var map_data = data.map(d => {
+        var map1 = data.map(d => {
             return {
                 species: Object.keys(d)[0],
                 count: d[Object.keys(d)[0]]
@@ -167,9 +165,9 @@ function build_vis3() {
         });
 
         // set scales and x,y maxes for vis3
-        const MAX_X3 = d3.max(map_data, (d) => { return parseInt(d.species); })
+        const MAX_X3 = d3.max(map1, (d) => { return parseInt(d.species); })
 
-        const MAX_Y3 = d3.max(map_data, (d) => { return parseInt(d.count); })
+        const MAX_Y3 = d3.max(map1, (d) => { return parseInt(d.count); })
 
         const X_SCALE3 = d3.scaleBand()
             .domain(Object.keys(color))
@@ -183,7 +181,7 @@ function build_vis3() {
         const color = {
             'virginica': 'green',
             'versicolor': 'blue',
-            'setosa': 'lightorange'
+            'setosa': 'orange'
         };
         // Add bars 
         let bar = FRAME3.selectAll("bar")
@@ -210,7 +208,5 @@ function build_vis3() {
             .call(d3.axisLeft(Y_SCALE3));
     });
 }
-// Create all the plots
-build_vis1();
-build_vis2();
+
 build_vis3();
