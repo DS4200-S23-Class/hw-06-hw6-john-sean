@@ -101,9 +101,9 @@ function build_vis2() {
             .attr("font-size", "12px");
 
         const colors = {
-            'virginica': 'green',
+            'setosa': 'green',
             'versicolor': 'blue',
-            'setosa': 'orange'
+            'virginica': 'orange'
         };
         // Enter data and append points to graph
         let scatter2 = FRAME2.selectAll("points")
@@ -179,9 +179,9 @@ function build_vis3() {
             .range([VIS_HEIGHT, 0]);
         // set the color to match other vis
         const color = {
-            'virginica': 'green',
+            'setosa': 'green',
             'versicolor': 'blue',
-            'setosa': 'orange'
+            'virginica': 'orange'
         };
         // Add bars 
         let bar = FRAME3.selectAll("bar")
