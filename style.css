@@ -1,0 +1,27 @@
+body {
+    font-family: arial;
+}
+
+h1, h2 { 
+    text-align: center;
+}
+
+.selected {
+    stroke: orange;
+    stroke-width: 3px;
+    opacity: 100%;
+}
+
+.column {
+    display:flex;
+    flex-direction:column;
+    flex:50%;
+}
+.row {
+    display: flex;  
+    flex-direction: row;
+    justify-content: space-between;
+    margin-left: 35px;
+    margin-bottom: 5px;
+}
+
